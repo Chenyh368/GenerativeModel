@@ -236,7 +236,7 @@ class ExperiMan(object):
     # Setting in every project
     def get_basic_arg_parser(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('--gpu', type=str, default="0,1,2", help="gpu device id")
+        parser.add_argument('--gpu', type=str, default="0", help="gpu device id")
         parser.add_argument('--code_dir', type=str, default="/root/Code/CycleGAN_rewrite", help="code dir (for backup)")
         parser.add_argument('--data_dir', type=str, default="/root/Dataset/", help="data dir")
         # ======> Setting run_dir
