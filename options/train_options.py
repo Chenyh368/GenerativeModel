@@ -29,7 +29,10 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--save_epoch_freq', type=int, default=1,
                             help='frequency of saving checkpoints at the end of epochs')
         # ============== Visualization Settings =====================
-
+        parser.add_argument('--iter_print_freq', type=int, default=10,
+                            help='frequency of showing training results on console')
+        parser.add_argument('--iter_display_freq', type=int, default=800,
+                            help='frequency of showing training results on screen')
 
         self.isTrain = True
         return parser

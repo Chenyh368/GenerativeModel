@@ -165,6 +165,11 @@ class ExperiMan(object):
         checkpoint_dir = self.get_checkpoint_dir()
         os.makedirs(checkpoint_dir, exist_ok=True)
         self._checkpoint_dir = checkpoint_dir
+        # image_dir : directory for the images of the run
+        image_dir = self.get_image_dir()
+        os.makedirs(image_dir, exist_ok=True)
+        self._image_dir = image_dir
+
 
     def _setup_uid(self):
         self._uid = '-'.join([datetime.now().strftime('%y%m%d-%H%M%S'),
@@ -303,6 +308,11 @@ class ExperiMan(object):
         run_dir = self.get_run_dir(run_name, run_number)
         return os.path.join(run_dir, 'checkpoints')
 
+    def get_image_dir(self, run_name=None, run_number=None):
+        run_dir = self.get_run_dir(run_name, run_number)
+        return os.path.join(run_dir, 'images')
+
+
     def get_tensorboard(self):
         if 'tensorboard' in self._third_party_tools:
             return self._tensorboard_writer
@@ -326,6 +336,17 @@ class ExperiMan(object):
             else:
                 scaler_name = '/'.join((split, name))
             writer.add_scalar(scaler_name, value, global_step)
+        else:
+            raise NotImplementedError
+
+    def log_image(self, name, image, global_step, epoch, split=None):
+        if 'tensorboard' in self._third_party_tools:
+            writer = self._tensorboard_writer
+            if split is None:
+                image_name = name
+            else:
+                image_name = '/'.join((split, name))
+            writer.add_images(image_name, image, global_step)
         else:
             raise NotImplementedError
 

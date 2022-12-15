@@ -73,10 +73,19 @@ class CustomDatasetDataLoader():
             self.dataset,
             batch_size=opt.batch_size,
             shuffle=not opt.serial_batches,
-            num_workers=int(opt.num_threads))
+            num_workers=int(opt.num_threads),
+            drop_last=opt.drop_last)
 
     def load_data(self):
         return self
+
+    def iter_num_per_epoch(self):
+        if self.__len__() % self.opt.batch_size == 0:
+            return int(self.__len__() / self.opt.batch_size)
+        elif self.opt.drop_last:
+            return int(self.__len__() / self.opt.batch_size)
+        else:
+            return int(self.__len__() / self.opt.batch_size) + 1
 
     def __len__(self):
         """Return the number of data in the dataset"""

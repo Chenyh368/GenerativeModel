@@ -27,6 +27,7 @@ class BaseModel(ABC):
         self.loss_names = []
         self.model_names = []
         self.visual_names = []
+        self.meter_names = [] # Need to implement
         self.optimizers = []
         self.image_paths = []
         self.metric = 0  # used for learning rate policy 'plateau'
@@ -128,6 +129,14 @@ class BaseModel(ABC):
             if isinstance(name, str):
                 errors_ret[name] = float(getattr(self, 'loss_' + name))  # float(...) works for both scalar tensor and float number
         return errors_ret
+
+    def get_current_meter(self):
+        """Return traning losses / errors. train.py will print out these errors on console, and save them to a file"""
+        meter_ret = OrderedDict()
+        for name in self.meter_names:
+            if isinstance(name, str):
+                meter_ret[name] = float(getattr(self, 'meter_' + name))  # float(...) works for both scalar tensor and float number
+        return meter_ret
 
     def save_networks(self, epoch):
         """Save all the networks to the disk.
